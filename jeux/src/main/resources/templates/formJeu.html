@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+layout:decorator="template">
+
+<link rel="stylesheet" type="text/css"
+href="webjars/bootstrap/4.3.1/css/bootstrap.min.css" />
+<head>
+<meta charset="utf-8">
+<title>Ajout des Jeux</title>
+</head>
+<body>
+	 <div th:replace="template">	</div> 
+
+<div layout:fragment="Mycontent">
+<div class="container mt-5">
+<div class="card">
+ <div class="card-header" th:if="${mode=='new'}"> Ajout des Jeux </div>
+ <div class="card-header" th:if="${mode=='edit'}">Modification des Jeux
+</div>
+<div class="card-body">
+ <form th:action="@{saveJeu}" method="post">
+	 <div class="form-group">
+<label class="control-label" hidden>ID Jeu :</label>
+ <input type="hidden" name="idJeu" class="form-control"
+th:value="${jeu.idJeu}" />
+</div>
+
+ <div class="form-group">
+<label class="control-label">Titre Jeu :</label>
+<input type="text" name="titre" class="form-control"
+th:value="${jeu.titre}"  />
+<span th:errors=${jeu.titre} class="text-danger"> </span>
+ </div>
+ <div class="form-group">
+<label class="control-label">Taille Jeu :</label>
+<input type="text" name="taille" class="form-control"
+th:value="${jeu.taille}" />
+<span th:errors=${jeu.taille} class="text-danger"> </span>
+
+ </div>
+ <div class="form-group">
+<label class="control-label">Niveau de difficulté :</label>
+<input type="text" name="niveauDifficulte" class="form-control"
+th:value="${jeu.niveauDifficulte}" />
+<span th:errors=${jeu.niveauDifficulte} class="text-danger"> </span>
+
+ </div>
+ <div class="form-group">
+ <label class="control-label">date création :</label>
+<input type="date" name="dateCreation" class="form-control"
+th:value="${jeu.dateCreation}" />
+<span th:errors=${jeu.dateCreation} class="text-danger"> </span>
+
+ </div>
+ 
+ <div class="form-group">
+<label class="control-label">Entreprise :</label> 
+<select     name="entreprise" class="form-control" th:value="${jeu.entreprise.idEnt}"   th:if= "${!#strings.isEmpty(jeu.entreprise)}" >
+
+  <option th:each="c:${entreprises}" th:if="${mode=='edit'}"th:value="${c.idEnt}" th:text="${c.nomEnt} "th:selected="${c.idEnt==jeu.entreprise.idEnt}">   </option>
+
+			<option th:each="c:${entreprises}" th:if="${mode=='new'}"th:value="${c.idEnt}" th:text="${c.nomEnt}"></option>
+			
+			
+	</select>
+							
+				<!-- Pour ne pas avoir d'erreurs si la catégorie est null on ajoute ce select -->
+				<select     name="entreprise" class="form-control"    th:if= "${#strings.isEmpty(jeu.entreprise)}" >
+						<option th:each="c:${entreprises}" th:value="${c.idEnt}" th:text="${c.nomEnt}"></option>
+					</select>
+							
+						</div>
+  <input type="text" name="page"  th:value="${page}" hidden/>
+ <div>
+ <button type="submit" class="btn btn-primary">Valider</button>
+ </div>
+ </form>
+</div>
+ </div>
+ </div>
+ </div>
+</body>
+</html>
